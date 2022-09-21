@@ -50,47 +50,57 @@
 
     <script>
         $(document).ready(function () {
-            get_posts();
+            get_posts('food');
         });
 
-        function get_posts() {
+        function get_posts(category) {
 
-            //$("#post-box").empty()
+            $("#post-box").empty()
             $.ajax({
                 type: "GET",
-                url: "/get_posts",
+                url: `/get_posts?category_give=${category}`,
                 data: {},
                 success: function (response) {
                     console.log(response['all_posts'])
                     let posts = response['all_posts']
                     for (let i = 0; i < posts.length; i++) {
-                        // let image = posts[i]['image']
+                        let image = posts[i]['image']
                         let comment = posts[i]['cooment']
                         let id = posts[i]['post_id']
+                        {#let count_heart = post['count_heart']#}
+                        {#let class_heart = post['heart_by_me'] ? "fa-heart" : "fa-heart-o"#}
 
 
                         let temp_html = `<div class="card" onclick='$("#modal-post_${id}").addClass("is-active")'>
                                             <div class="card-image">
                                                 <figure class="image is-4by3">
-                                                    <img src="..." alt="Placeholder image">
+                                                    <img src="${image}" alt="Placeholder image">
                                                 </figure>
                                             </div>
                                             <div class="card-content">
                                                 <div class="media">
-                                                    <div class="media-left">
-                                                        <figure class="image is-48x48">
-                                                            <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-                                                        </figure>
-                                                    </div>
                                                     <div class="media-content">
                                                         <p class="title is-4">John Smith</p>
-                                                        <p class="subtitle is-6">@johnsmith</p>
+
+                                                    </div>
+                                                    <div class="media-left">
+                                                        <nav class="level is-mobile">
+                                                            <div class="level-left">
+                                                                <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('{id})">
+                                                                    {#<span class="icon is-small"><i class="fa ${class_heart}"#}
+                                                                    {#                               aria-hidden="true"></i></span>&nbsp;<span class="like-num">${num2str(count_heart)}</span>#}
+                                                                    <span class="icon is-small"><i class="fa fa-heart"
+                                                                                                               aria-hidden="true"></i></span>&nbsp;<span
+                                                                                    class="like-num">2.7k</span>
+                                                                </a>
+                                                            </div>
+
+                                                        </nav>
                                                     </div>
                                                 </div>
 
                                                 <div class="content">
-                                                    ${comment} <a>@bulmaio</a>.
-                                                    <a href="#">#css</a> <a href="#">#responsive</a>
+                                                    ${comment}
                                                     <br>
                                                     <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
                                                 </div>
@@ -105,7 +115,7 @@
                                                     <div class="card">
                                                         <div class="card-image">
                                                             <figure class="image is-4by3">
-                                                                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+                                                                <img src="${image}" alt="Placeholder image">
                                                             </figure>
                                                         </div>
                                                         <div class="card-content">
@@ -117,16 +127,30 @@
                                                                 </div>
                                                                 <div class="media-content">
                                                                     <p class="title is-4">John Smith</p>
-                                                                    <p class="subtitle is-6">@johnsmith</p>
+
+                                                                </div>
+                                                                <div class="media-left">
+                                                                    <nav class="level is-mobile">
+                                                                        <div class="level-left">
+                                                                            <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like(${id})">
+                                                                                <span class="icon is-small"><i class="fa fa-heart"
+                                                                                                               aria-hidden="true"></i></span>&nbsp;<span
+                                                                                    class="like-num">2.7k</span>
+                                                                            </a>
+                                                                        </div>
+                                                                    </nav>
                                                                 </div>
                                                             </div>
 
+
                                                             <div class="content">
-                                                                ${comment} <a>@bulmaio</a>.
-                                                                <a href="#">#css</a> <a href="#">#responsive</a>
+                                                                ${comment}
                                                                 <br>
                                                                 <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
                                                             </div>
+
+                                                        </nav>
+                                                    </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -143,11 +167,59 @@
             $.ajax({
                 type: "POST",
                 url: "/posting_test",
-                data: {comment_give: '테스트4'},
+                data: {comment_give: '테스트4입니다 여기엔 코멘트가 들어갑니다!! 포토카드 크기 왜 달라,,,,,', image_give: "./static/sample_supplement1.PNG", category: 'supplement'},
                 success: function (response) {
                     console.log(response['msg'])
                 }
             })
+        }
+
+        function toggle_like(post_id, type) {
+            console.log(post_id)
+            let $a_like = $(`#${post_id} a[aria-label='heart']`)
+            let $i_like = $a_like.find("i")
+            if ($i_like.hasClass("fa-heart")) {
+                $.ajax({
+                    type: "POST",
+                    url: "/update_like",
+                    data: {
+                        post_id_give: post_id,
+                        action_give: "unlike"
+                    },
+                    success: function (response) {
+                        console.log("unlike")
+                        {#$i_like.addClass("fa-heart-o").removeClass("fa-heart")#}
+                        {#$a_like.find("span.like-num").text(response["count"])#}
+                    }
+                })
+            } else {
+                $.ajax({
+                    type: "POST",
+                    url: "/update_like",
+                    data: {
+                        post_id_give: post_id,
+                        action_give: "like"
+                    },
+                    success: function (response) {
+                        console.log("like")
+                        {#$i_like.addClass("fa-heart").removeClass("fa-heart-o")#}
+                        {#$a_like.find("span.like-num").text(num2str(response["count"]))#}
+                    }
+                })
+
+            }
+        }
+        function num2str(count) {
+            if (count > 10000) {
+                return parseInt(count / 1000) + "k"
+            }
+            if (count > 500) {
+                return parseInt(count / 100) / 10 + "k"
+            }
+            if (count == 0) {
+                return ""
+            }
+            return count
         }
 
     </script>
@@ -183,10 +255,10 @@
     </div>
 
     <ul class="header__navbar">
-        <li class="header__navbar__item">바디</li>
-        <li class="header__navbar__item">식단</li>
-        <li class="header__navbar__item">운동</li>
-        <li class="header__navbar__item">보조제</li>
+        <li class="header__navbar__item" onclick="get_posts('body')">바디</li>
+        <li class="header__navbar__item" onclick="get_posts('food')">식단</li>
+        <li class="header__navbar__item" onclick="get_posts('exercise')">운동</li>
+        <li class="header__navbar__item" onclick="get_posts('supplement')">보조제</li>
     </ul>
 
     <div class="header__account">
@@ -282,7 +354,8 @@
 
 <button onclick="posting_test()"> 값들 데베에 넣기</button>
 
-<image src="{{ url_for('static', filename='smaple_1.PNG') }}" >
+{#<image src="{{ url_for('static', filename='smaple_1.PNG') }}" >#}
+{#<image src="./static/smaple_1.PNG" >#}
 
 </body>
 </html>
