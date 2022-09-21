@@ -1,0 +1,138 @@
+button {
+  background-color: transparent;
+  color: white;
+  border-width: 10px;
+  border-color: white;
+}
+
+.section {
+  width: 100%;
+
+  position: absolute;
+  top: 15%;
+  z-index: 0;
+
+  padding: 1rem 1.5rem;
+  margin: auto;
+}
+
+.is-sparta {
+  color: #e8344e !important;
+}
+
+.button.is-sparta {
+  background-color: #262524;
+  border-color: transparent;
+  color: #fff !important;
+}
+
+.button.is-sparta.is-outlined {
+  background-color: #b5a59a;
+  border-color: transparent;
+  color: #262524 !important;
+}
+
+.help {
+  color: gray;
+}
+
+.box {
+  background-color: #433935;
+  /*max-width: 480px;*/
+  padding: 3vw 4vw;
+  width: 50vw;
+  min-width: 300px;
+  margin: auto;
+
+  border-radius: 2vw;
+}
+
+.icon {
+  font-size: 2vw;
+  /* font-size: calc(5px + 1.4vw); */
+}
+input.underline {
+  background-color: transparent;
+  /* font-size: 2.5vw; */
+  font-size: calc(5px + 2vw);
+  color: white;
+
+  width: 100%;
+  min-height: 30px;
+  height: 3.5vw;
+
+  border-radius: 0%;
+  border-color: #ffffff;
+  border-left-width: 0;
+  border-right-width: 0;
+  border-top-width: 0;
+  border-bottom-width: 1px;
+}
+input.underline::placeholder {
+  font-family: 'Noto Serif KR', serif;
+
+  /* font-size: 2.5vw; */
+  font-size: calc(5px + 2vw);
+  color: white;
+
+  position: absolute;
+  left: 5vw;
+  bottom: 0.5vw;
+}
+input.underline:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+button.float {
+  background-color: transparent;
+  color: white;
+  font-size: 1.3vw;
+
+  width: 8vw;
+  min-height: 30px;
+  height: 3.5vw;
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+
+  border: thick solid white; /*초기화*/
+  border-radius: 0%;
+  border-color: white;
+  border-left-width: 0;
+  border-right-width: 0;
+  border-top-width: 0;
+  border-bottom-width: 1px;
+}
+button.float:hover {
+  cursor: pointer;
+}
+
+h4.mb-3 {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 1.5vw;
+  color: #b5a59a;
+}
+.help {
+  font-size: 1.2vw;
+}
+
+.sign-hr {
+  background-color: #b5a59a;
+}
+
+.character-box {
+  position: absolute;
+}
+#character-img {
+  position: relative;
+  top: 17vh;
+  left: 64.5vw;
+
+  width: 25vw;
+}
+
+@media all and (max-width: 1024px) {
+  .character-box {
+    display: none;
+  }
+}

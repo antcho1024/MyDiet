@@ -1,10 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-</body>
+    <!--OG-->
+    <title>My Diet</title>
+    <meta name="description" content="Hanghae99 Mini Project My Diet" />
+    <meta name="author" content="GroupB8" />
+
+    <!--Favicon-->
+    <link rel="icon" type="image/png" href="../static/favicon.png" />
+
+    <!--CSS FontAwesome-->
+    <script
+      src="https://kit.fontawesome.com/92993542cc.js"
+      crossorigin="anonymous"
+    ></script>
+    <!--CSS BULMA-->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
+    />
+    <!--GoogleFont-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gugi&family=Noto+Serif+KR&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="../static/login.js" defer></script>
+    <link rel="stylesheet" href="../static/header.css" />
+    <link rel="stylesheet" href="../static/login.css" />
+
+    <style></style>
+  </head>
+  <body>
+    <header id="header">
+      <div class="header__logo">
+        <img class="fab" src="../static/favicon.png" alt="favicon" />
+        <a href="#">My Diet</a>
+      </div>
+
+      <ul class="header__navbar">
+        <li class="header__navbar__item">바디</li>
+        <li class="header__navbar__item">식단</li>
+        <li class="header__navbar__item">운동</li>
+        <li class="header__navbar__item">보조제</li>
+      </ul>
+
+      <div class="header__account">
+        <div class="account__profile is-hidden">
+          <div class="profile__box">
+            <img
+              class="account__profile_picture"
+              src="../static/profile_pics/profile_placeholder.png"
+              alt="profile picture"
+            />
+          </div>
+          <p class="account__profile__nickname">XXX 님</p>
+          <a href="#" class="account__mypage">마이페이지</a>
+          <a href="#" class="account__signout">로그아웃</a>
+        </div>
+        <div class="account__no-profile">
+          <a href="/login" class="account__signin"
+            >로그인&nbsp / &nbsp회원가입</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <section class="section" style="z-index: 0">
+      <div class="container">
+        <div class="box">
+          <article class="media">
+            <div class="media-content">
+              <div class="content">
+                <div class="field has-addons" style="margin-bottom: 0">
+                  <div class="control has-icons-left" style="width: 100%">
+                    <input
+                      id="input-username"
+                      class="underline"
+                      type="text"
+                      placeholder="아이디"
+                      style="padding-left: 4.5vw; padding-bottom: 0.5vw"
+                    />
+                    <span
+                      class="icon is-small is-left"
+                      style="width: 4vw; height: 100%"
+                    >
+                      <i class="fa fa-user"></i
+                    ></span>
+                  </div>
+                  <div id="btn-check-dup" class="control is-hidden">
+                    <button class="float" onclick="check_dup()">
+                      중복확인
+                    </button>
+                  </div>
+                </div>
+                <p id="help-id" class="help is-hidden">
+                  아이디는 2-10자의 영문과 숫자와 일부 특수문자(._-)만 입력
+                  가능합니다.
+                </p>
+                <p id="help-id-login" class="help is-danger"></p>
+
+                <div class="div-space" style="height: 2vw"></div>
+
+                <div class="field">
+                  <div class="control has-icons-left">
+                    <input
+                      id="input-password"
+                      class="underline"
+                      type="password"
+                      placeholder="비밀번호"
+                      style="padding-left: 4.5vw; padding-bottom: 0.5vw"
+                    />
+                    <span
+                      class="icon is-small is-left"
+                      style="width: 4vw; height: 100%"
+                      ><i class="fa fa-lock"></i
+                    ></span>
+                  </div>
+                  <p id="help-password" class="help is-hidden">
+                    영문과 숫자 조합의 8-20자의 비밀번호를 설정해주세요.
+                    특수문자(!@#$%^&*)도 사용 가능합니다.
+                  </p>
+                </div>
+              </div>
+
+              <div class="div-space" style="height: 1.5vw"></div>
+
+              <div id="div-sign-in-or-up" class="has-text-centered">
+                <nav class="level is-mobile">
+                  <button
+                    class="level-item button is-sparta"
+                    onclick="sign_in()"
+                    style="font-size: 1.7vw"
+                  >
+                    로그인
+                  </button>
+                </nav>
+
+                <hr class="sign-hr" />
+
+                <div class="div-space" style="height: 1vw"></div>
+
+                <h4 class="mb-3">아직 회원이 아니라면</h4>
+
+                <nav class="level is-mobile">
+                  <button
+                    class="level-item button is-sparta is-outlined"
+                    onclick="click_gosignup_btn(); toggle_sign_up();"
+                    style="font-size: 1.7vw"
+                  >
+                    회원가입하기
+                  </button>
+                </nav>
+              </div>
+
+              <div class="div-space" style="height: 1vw"></div>
+
+              <div id="sign-up-box" class="is-hidden">
+                <div class="mb-5">
+                  <div class="field">
+                    <div class="control has-icons-left" style="width: 100%">
+                      <input
+                        id="input-password2"
+                        class="underline"
+                        type="password"
+                        placeholder="비밀번호 재입력"
+                        style="padding-left: 4.5vw; padding-bottom: 0.5vw"
+                      />
+                      <span
+                        class="icon is-small is-left"
+                        style="width: 4vw; height: 100%"
+                        ><i class="fa fa-lock"></i
+                      ></span>
+                    </div>
+                    <p id="help-password2" class="help is-hidden">
+                      비밀번호를 다시 한 번 입력해주세요.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="div-space" style="height: 1vw"></div>
+
+                <nav class="level is-mobile">
+                  <button
+                    class="level-item button is-sparta"
+                    onclick="sign_up()"
+                    style="font-size: 1.7vw"
+                  >
+                    회원가입
+                  </button>
+                  <button
+                    class="level-item button is-sparta is-outlined"
+                    onclick="click_cancel_btn(); toggle_sign_up();"
+                    style="font-size: 1.7vw"
+                  >
+                    취소
+                  </button>
+                </nav>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <div class="character-box">
+      <img id="character-img" src="../static/character.png" alt="character" />
+    </div>
+  </body>
 </html>
