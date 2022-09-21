@@ -11,7 +11,7 @@
     <meta name="author" content="GroupB8" />
 
     <!--Favicon-->
-    <link rel="icon" type="image/png" href="imgs/favicon.png" />
+    <link rel="icon" type="image/png" href="../static/favicon.png" />
 
     <!--CSS FontAwesome-->
     <script
@@ -24,23 +24,22 @@
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
     />
     <!--GoogleFont-->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Gugi&family=Jua&display=swap"
-      rel="stylesheet"
-    />
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gugi&family=Noto+Serif+KR&display=swap"
+            rel="stylesheet">
 
-    <!-- JS -->
+
+      <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
 
-    <link rel="stylesheet" href="header.css" />
+    <link rel="stylesheet" href="../static/header.css" />
   </head>
   <body>
     <header id="header">
       <div class="header__logo">
-        <img class="fab" src="./imgs/favicon.png" alt="favicon" />
+        <img class="fab" src="../static/favicon.png" alt="favicon" />
         <a href="#">My Diet</a>
       </div>
 
@@ -52,21 +51,22 @@
       </ul>
 
       <div class="header__account">
-        <div class="account__profile">
+        <div class="account__profile is-hidden">
           <div class="profile__box">
             <img
               class="account__profile_picture"
-              src="./imgs/profile_placeholder.png"
+              src="../static/profile_pics/profile_placeholder.png"
               alt="profile picture"
             />
           </div>
-
           <p class="account__profile__nickname">XXX 님</p>
+          <a href="#" class="account__mypage">마이페이지</a>
+          <a href="#" class="account__signout">로그아웃</a>
         </div>
-        <a href="#" class="account__mypage">마이페이지</a>
-        <a href="#" class="account__signout">로그아웃</a>
-        <a href="#" class="account__signin">로그인</a>
-        <a href="#" class="account__signup">회원가입</a>
+        <div class="account__no-profile">
+            <a href="#" class="account__signin">로그인</a>
+            <a href="#" class="account__signup">회원가입</a>
+        </div>
       </div>
     </header>
   </body>
