@@ -69,7 +69,7 @@
                         let id = posts[i]['post_id']
                         {#let count_heart = post['count_heart']#}
                         {#let class_heart = post['heart_by_me'] ? "fa-heart" : "fa-heart-o"#}
-
+                        let comment_short = comment.length <15 ? comment : comment.slice(0,35) +'...'
 
                         let temp_html = `<div class="card" onclick='$("#modal-post_${id}").addClass("is-active")'>
                                             <div class="card-image">
@@ -100,7 +100,7 @@
                                                 </div>
 
                                                 <div class="content">
-                                                    ${comment}
+                                                    ${comment_short}
                                                     <br>
                                                     <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
                                                 </div>
@@ -167,7 +167,7 @@
             $.ajax({
                 type: "POST",
                 url: "/posting_test",
-                data: {comment_give: '테스트4입니다 여기엔 코멘트가 들어갑니다!! 포토카드 크기 왜 달라,,,,,', image_give: "./static/sample_supplement1.PNG", category: 'supplement'},
+                data: {comment_give: '테스트입니다 여기엔 코멘트가 들어갑니다!! 사진 크기가 아니라 글자길이인가???????ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ그렇넹', image_give: "./static/smaple_1.PNG", category: 'food'},
                 success: function (response) {
                     console.log(response['msg'])
                 }
@@ -239,8 +239,8 @@
         }
 
         .post > .card {
-            margin-right: 20px;
-            margin-top: 20px;
+            margin-right: 35px;
+            margin-top: 50px;
             width: 30%;
         }
 
