@@ -23,7 +23,7 @@
     <meta name="author" content="GroupB8"/>
 
     <!--Favicon-->
-    <link rel="icon" type="image/png" href="./imgs/favicon.png"/>
+    <link rel="icon" type="image/png" href="./static/favicon.png"/>
 
     <!--CSS FontAwesome-->
     <script
@@ -45,8 +45,9 @@
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="./static/myjs.js" defer></script>
 
-    <link rel="stylesheet" href="./static/header1.css"/>
+    <link rel="stylesheet" href="./static/header.css"/>
 
     <script>
         $(document).ready(function () {
@@ -61,15 +62,18 @@
                 url: `/get_posts?category_give=${category}`,
                 data: {},
                 success: function (response) {
-                    console.log(response['all_posts'])
+                    console.log(response['all_posts'].length)
+                    {#let posts = JSON.parse(response['all_posts'])#}
                     let posts = response['all_posts']
                     for (let i = 0; i < posts.length; i++) {
+                        let name = posts[i]['username']
+                        let date = posts[i]['date']
                         let image = posts[i]['image']
                         let comment = posts[i]['cooment']
                         let id = posts[i]['post_id']
-                        {#let count_heart = post['count_heart']#}
-                        {#let class_heart = post['heart_by_me'] ? "fa-heart" : "fa-heart-o"#}
-                        let comment_short = comment.length <15 ? comment : comment.slice(0,35) +'...'
+                        let count_heart = posts[i]['count_heart']
+                        let class_heart = posts[i]['heart_by_me'] ? "fa-heart" : "fa-heart-o"
+                        let comment_short = comment.length <15 ? comment : comment.slice(0,10) +'...'
 
                         let temp_html = `<div class="card" onclick='$("#modal-post_${id}").addClass("is-active")'>
                                             <div class="card-image">
@@ -80,18 +84,14 @@
                                             <div class="card-content">
                                                 <div class="media">
                                                     <div class="media-content">
-                                                        <p class="title is-4">John Smith</p>
+                                                        <p class="title is-4">${name}</p>
 
                                                     </div>
                                                     <div class="media-left">
                                                         <nav class="level is-mobile">
                                                             <div class="level-left">
                                                                 <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('{id})">
-                                                                    {#<span class="icon is-small"><i class="fa ${class_heart}"#}
-                                                                    {#                               aria-hidden="true"></i></span>&nbsp;<span class="like-num">${num2str(count_heart)}</span>#}
-                                                                    <span class="icon is-small"><i class="fa fa-heart"
-                                                                                                               aria-hidden="true"></i></span>&nbsp;<span
-                                                                                    class="like-num">2.7k</span>
+
                                                                 </a>
                                                             </div>
 
@@ -102,7 +102,7 @@
                                                 <div class="content">
                                                     ${comment_short}
                                                     <br>
-                                                    <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                                                    <time datetime="2016-1-1">${date}</time>
                                                 </div>
                                             </div>
                                         </div>
@@ -126,27 +126,17 @@
                                                                     </figure>
                                                                 </div>
                                                                 <div class="media-content">
-                                                                    <p class="title is-4">John Smith</p>
+                                                                    <p class="title is-4">${name}</p>
 
                                                                 </div>
-                                                                <div class="media-left">
-                                                                    <nav class="level is-mobile">
-                                                                        <div class="level-left">
-                                                                            <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like(${id})">
-                                                                                <span class="icon is-small"><i class="fa fa-heart"
-                                                                                                               aria-hidden="true"></i></span>&nbsp;<span
-                                                                                    class="like-num">2.7k</span>
-                                                                            </a>
-                                                                        </div>
-                                                                    </nav>
-                                                                </div>
+
                                                             </div>
 
 
                                                             <div class="content">
                                                                 ${comment}
                                                                 <br>
-                                                                <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                                                                <time datetime="2016-1-1">${date}</time>
                                                             </div>
 
                                                         </nav>
@@ -167,7 +157,7 @@
             $.ajax({
                 type: "POST",
                 url: "/posting_test",
-                data: {comment_give: '테스트입니다 여기엔 코멘트가 들어갑니다!! 사진 크기가 아니라 글자길이인가???????ㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏㅏ그렇넹', image_give: "./static/smaple_1.PNG", category: 'food'},
+                data: {comment_give: '제 사진 보고 자극 받으세요 ㅎㅎ ', image_give: "./static/sample_body.PNG", category: 'body', username_give: '신동', date:'3:34 PM - 22 Sep 2022'},
                 success: function (response) {
                     console.log(response['msg'])
                 }
@@ -249,113 +239,57 @@
 </head>
 <body>
 <header id="header">
-    <div class="header__logo">
-        <img class="fab" src="{{ url_for('static', filename='favicon.png') }}" alt="favicon"/>
-        <a href="/">My Diet</a>
-    </div>
+      <div class="header__logo">
+        <img class="fab" src="../static/favicon.png" alt="favicon" />
+        <a href="#">My Diet</a>
+      </div>
 
-    <ul class="header__navbar">
+      <ul class="header__navbar">
         <li class="header__navbar__item" onclick="get_posts('body')">바디</li>
         <li class="header__navbar__item" onclick="get_posts('food')">식단</li>
         <li class="header__navbar__item" onclick="get_posts('exercise')">운동</li>
         <li class="header__navbar__item" onclick="get_posts('supplement')">보조제</li>
-    </ul>
+      </ul>
 
-    <div class="header__account">
+      <div class="header__account">
+        {% if login_status %}
         <div class="account__profile">
-            <div class="profile__box">
-                <img
-                        class="account__profile_picture"
-                        src="{{ url_for('static', filename='profile_placeholder.png') }}"
-                        alt="profile picture"
-                />
-            </div>
-
-            <p class="account__profile__nickname">XXX 님</p>
+          <div class="profile__box">
+            <!-- <img
+              class="account__profile_picture"
+              src="../static/profile_pics/profile_placeholder.png"
+              alt="profile picture"
+            /> -->
+            <img
+              class="account__profile_picture"
+              src="{{ url_for('static', filename=user_info.profile_pic_real) }}"
+              alt="profile picture"
+            />
+          </div>
+          <p class="account__profile__nickname">
+            {{ user_info.profile_name }} 님
+          </p>
+          <a href="#" class="account__mypage">마이페이지</a>
+          <a href="#" class="account__signout" onclick="sign_out()">로그아웃</a>
         </div>
-        <a href="#" class="account__mypage">마이페이지</a>
-        <a href="#" class="account__signout">로그아웃</a>
-        <a href="#" class="account__signin">로그인</a>
-        <a href="#" class="account__signup">회원가입</a>
-    </div>
-</header>
+        {% else %}
+        <div class="account__no-profile">
+          <a href="/login" class="account__signin"
+            >로그인&nbsp / &nbsp회원가입</a
+          >
+        </div>
+        {% endif %}
+      </div>
+    </header>
 
 
 <div id="post-box" class="post">
-{#    <div class="card" onclick='$("#modal-post").addClass("is-active")'>#}
-{#        <div class="card-image">#}
-{#            <figure class="image is-4by3">#}
-{#                <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">#}
-{#            </figure>#}
-{#        </div>#}
-{#        <div class="card-content">#}
-{#            <div class="media">#}
-{#                <div class="media-left">#}
-{#                    <figure class="image is-48x48">#}
-{#                        <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">#}
-{#                    </figure>#}
-{#                </div>#}
-{#                <div class="media-content">#}
-{#                    <p class="title is-4">John Smith</p>#}
-{#                    <p class="subtitle is-6">@johnsmith</p>#}
-{#                </div>#}
-{#            </div>#}
-{##}
-{#            <div class="content">#}
-{#                Lorem ipsum dolor sit amet, consectetur adipiscing elit.#}
-{#                Phasellus nec iaculis mauris. <a>@bulmaio</a>.#}
-{#                <a href="#">#css</a> <a href="#">#responsive</a>#}
-{#                <br>#}
-{#                <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-{#    <div class="modal" id="modal-post">#}
-{#        <div class="modal-background" onclick='$("#modal-post").removeClass("is-active")'></div>#}
-{#        <div class="modal-content">#}
-{#            <!-- Any other Bulma elements you want -->#}
-{#            <div class="card">#}
-{#                <div class="card-image">#}
-{#                    <figure class="image is-4by3">#}
-{#                        <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">#}
-{#                    </figure>#}
-{#                </div>#}
-{#                <div class="card-content">#}
-{#                    <div class="media">#}
-{#                        <div class="media-left">#}
-{#                            <figure class="image is-48x48">#}
-{#                                <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">#}
-{#                            </figure>#}
-{#                        </div>#}
-{#                        <div class="media-content">#}
-{#                            <p class="title is-4">John Smith</p>#}
-{#                            <p class="subtitle is-6">@johnsmith</p>#}
-{#                        </div>#}
-{#                    </div>#}
-{##}
-{#                    <div class="content">#}
-{#                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.#}
-{#                        Phasellus nec iaculis mauris. <a>@bulmaio</a>.#}
-{#                        <a href="#">#css</a> <a href="#">#responsive</a>#}
-{#                        <br>#}
-{#                        <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#        <button class="modal-close is-large" aria-label="close"#}
-{#                onclick='$("#modal-post").removeClass("is-active")'></button>#}
-{#    </div>#}
-</div>
-
 
 </div>
 
 
-<button onclick="posting_test()"> 값들 데베에 넣기</button>
+{#<button onclick="posting_test()">값들 넣기</button>#}
 
-{#<image src="{{ url_for('static', filename='smaple_1.PNG') }}" >#}
-{#<image src="./static/smaple_1.PNG" >#}
 
 </body>
 </html>
