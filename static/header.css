@@ -13,7 +13,7 @@ body {
   position: fixed;
 
   padding: 0 1vw 0 1vw;
-  z-index: 1000;
+  z-index: 00;
 
   display: flex;
   flex-flow: row nowrap;
@@ -104,15 +104,16 @@ body {
 
   .header__account {
     width: 25%;
-    font-size: 1.3vw;
+    font-size: 1vw;
   }
 
   .header__account a {
-    margin: 0 1.3vw 0 0;
+    margin: 0 1vw 0 0;
   }
 
   .account__profile__nickname {
-    margin-right: 1.3vw;
+    margin-right: 1vw;
+    display: none;
   }
 
   .profile__box {
@@ -126,6 +127,10 @@ body {
 
 /*Labtop Device*/
 @media all and (min-width: 768px) and (max-width: 1024px) {
+  .account__profile__nickname {
+    margin-right: 1vw;
+    display: none;
+  }
 }
 
 /*Desktop Device*/
@@ -147,18 +152,20 @@ body {
 
   .header__account {
     width: 25%;
-    font-size: 1.3vw;
+    font-size: 1vw;
   }
   .header__account a {
-    margin: 0 1.3vw 0 0;
+    margin: 0 1vw 0 0;
   }
   .account__profile__nickname {
     margin-right: 1.3vw;
   }
   .profile__box {
+    width: 3vw;
+    height: 3vw;
     margin: 0 0.7vw 0 0;
   }
   .account__profile_picture {
-    width: 2.5vw;
+    width: 3vw;
   }
 }

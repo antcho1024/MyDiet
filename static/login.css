@@ -10,7 +10,7 @@ button {
 
   position: absolute;
   top: 15%;
-  z-index: 0;
+  z-index: 100;
 
   padding: 1rem 1.5rem;
   margin: auto;
@@ -129,6 +129,17 @@ h4.mb-3 {
   left: 64.5vw;
 
   width: 25vw;
+}
+
+.bush-box {
+  position: absolute;
+  bottom: 0;
+  z-index: 0;
+}
+#bush-img {
+  position: relative;
+  width: 100%;
+  top: 10px;
 }
 
 @media all and (max-width: 1024px) {

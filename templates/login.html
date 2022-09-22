@@ -55,27 +55,37 @@
       </ul>
 
       <div class="header__account">
-        <div class="account__profile is-hidden">
+        {% if login_status %}
+        <div class="account__profile">
           <div class="profile__box">
-            <img
+            <!-- <img
               class="account__profile_picture"
               src="../static/profile_pics/profile_placeholder.png"
               alt="profile picture"
+            /> -->
+            <img
+              class="account__profile_picture"
+              src="{{ url_for('static', filename=user_info.profile_pic_real) }}"
+              alt="profile picture"
             />
           </div>
-          <p class="account__profile__nickname">XXX 님</p>
+          <p class="account__profile__nickname">
+            {{ user_info.profile_name }} 님
+          </p>
           <a href="#" class="account__mypage">마이페이지</a>
-          <a href="#" class="account__signout">로그아웃</a>
+          <a href="#" class="account__signout" onclick="sign_out()">로그아웃</a>
         </div>
+        {% else %}
         <div class="account__no-profile">
           <a href="/login" class="account__signin"
             >로그인&nbsp / &nbsp회원가입</a
           >
         </div>
+        {% endif %}
       </div>
     </header>
 
-    <section class="section" style="z-index: 0">
+    <section class="section" style="z-index: 100">
       <div class="container">
         <div class="box">
           <article class="media">
@@ -215,6 +225,13 @@
 
     <div class="character-box">
       <img id="character-img" src="../static/character.png" alt="character" />
+    </div>
+    <div class="bush-box">
+      <img
+        id="bush-img"
+        src="../static/free-png-download-grass-hd-png-images-background-pn-3.png"
+        alt="character"
+      />
     </div>
   </body>
 </html>

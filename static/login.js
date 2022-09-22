@@ -105,6 +105,7 @@ function sign_up() {
   });
 }
 
+/*로그인 <-> 회원가입 창 변경 토글*/
 function toggle_sign_up() {
   $('#sign-up-box').toggleClass('is-hidden');
   $('#div-sign-in-or-up').toggleClass('is-hidden');
@@ -113,13 +114,14 @@ function toggle_sign_up() {
   $('#help-password').toggleClass('is-hidden');
   $('#help-password2').toggleClass('is-hidden');
 }
-
+/*회원가입하러가기 버튼 클릭 시 초기화*/
 function click_gosignup_btn() {
   $('#help-id-login').text('');
   $('#input-username').val('');
   $('#input-password').val('');
   $('#input-password2').val('');
 }
+/*취소 버튼 클릭 시 초기화*/
 function click_cancel_btn() {
   $('#help-id')
     .text(
@@ -145,16 +147,18 @@ function click_cancel_btn() {
   $('#input-password2').val('');
 }
 
+/*아이디 양식 확인*/
 function is_nickname(asValue) {
   var regExp = /^(?=.*[a-zA-Z])[-a-zA-Z0-9_.]{2,10}$/;
   return regExp.test(asValue);
 }
-
+/*비밀번호 양식 확인*/
 function is_password(asValue) {
   var regExp = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,20}$/;
   return regExp.test(asValue);
 }
 
+/*ID 중복확인*/
 function check_dup() {
   let username = $('#input-username').val();
   console.log(username);
