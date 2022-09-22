@@ -1,6 +1,5 @@
 <div align="center">
   <h2>My Diet</h2>
-  ![image](https://user-images.githubusercontent.com/50614113/191668293-f36bf48f-a658-4334-9429-f82efdfa5a9c.png)
 
  
 </div>
