@@ -18,4 +18,4 @@ https://www.figma.com/file/kUsrwwKrzcuYVcBBYmwBRf/My-Diet-%EC%99%80%EC%9D%B4%EC%
 </pre>
 
 
-![캡처](https://user-images.githubusercontent.com/50614113/191726234-ba04c3a3-5aa9-40ae-9644-3ac140ffadc3.PNG)
+![KakaoTalk_20220922_192702729](https://user-images.githubusercontent.com/50614113/191726559-e254f868-5509-48ed-b97d-ce9d67896058.png)
