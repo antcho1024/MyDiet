@@ -1,296 +1,425 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <!--    <meta charset="utf-8">-->
-    <!--    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Title</title>
+        <!--OG-->
+        <title>My Diet</title>
+        <meta name="description" content="Hanghae99 Mini Project My Diet" />
+        <meta name="author" content="GroupB8" />
 
+        <!--Favicon-->
+        <link rel="icon" type="image/png" href="../static/favicon.png" />
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
+        <!--CSS FontAwesome-->
+        <script src="https://kit.fontawesome.com/92993542cc.js" crossorigin="anonymous"></script>
+        <!--CSS BULMA-->
+        <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
+        />
+        <!--GoogleFont-->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+        href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gugi&family=Noto+Serif+KR&display=swap"
+        rel="stylesheet"
+        />
 
-    <!--OG-->
-    <title>My Diet</title>
-    <meta name="description" content="Hanghae99 Mini Project My Diet"/>
-    <meta name="author" content="GroupB8"/>
+        <!-- JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+        <!-- BBTEST -->
+        <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
 
-    <!--Favicon-->
-    <link rel="icon" type="image/png" href="./static/favicon.png"/>
+        <script src="./static/myjs.js" defer></script>
 
-    <!--CSS FontAwesome-->
-    <script
-            src="https://kit.fontawesome.com/92993542cc.js"
-            crossorigin="anonymous"
-    ></script>
+        <link rel="stylesheet" href="./static/header.css" />
 
-    <!--CSS BULMA-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+        <script>
+            $(document).ready(function () {
+                bsCustomFileInput.init()
+                get_posts('food');
+            });
 
-    <!--GoogleFont-->
-    <link rel="preconnect" href="https://fonts.googleapis.com"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-    <link
-            href="https://fonts.googleapis.com/css2?family=Gugi&family=Jua&display=swap"
-            rel="stylesheet"
-    />
+            function get_posts(category) {
 
-    <!-- JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-    <script src="./static/myjs.js" defer></script>
+                $("#post-box").empty()
+                $.ajax({
+                    type: "GET",
+                    url: `/get_posts?category_give=${category}`,
+                    data: {},
+                    success: function (response) {
+                        console.log(response['all_posts'].length)
+                        {#let posts = JSON.parse(response['all_posts'])#}
+                        let posts = response['all_posts']
+                        for (let i = 0; i < posts.length; i++) {
+                            let name = posts[i]['username']
+                            let date = posts[i]['date']
+                            let image = posts[i]['image']
+                            let comment = posts[i]['cooment']
+                            let id = posts[i]['post_id']
+                            let count_heart = posts[i]['count_heart']
+                            let class_heart = posts[i]['heart_by_me'] ? "fa-heart" : "fa-heart-o"
+                            let comment_short = comment.length <15 ? comment : comment.slice(0,10) +'...'
 
-    <link rel="stylesheet" href="./static/header.css"/>
+                            let temp_html = `<div class="card" onclick='$("#modal-post_${id}").addClass("is-active")'>
+                                                <div class="card-image">
+                                                    <figure class="image is-4by3">
+                                                        <img src="${image}" alt="Placeholder image">
+                                                    </figure>
+                                                </div>
+                                                <div class="card-content">
+                                                    <div class="media">
+                                                        <div class="media-content">
+                                                            <p class="title is-4">${name}</p>
 
-    <script>
-        $(document).ready(function () {
-            get_posts('food');
-        });
+                                                        </div>
+                                                        <div class="media-left">
+                                                            <nav class="level is-mobile">
+                                                                <div class="level-left">
+                                                                    <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('{id})">
 
-        function get_posts(category) {
+                                                                    </a>
+                                                                </div>
 
-            $("#post-box").empty()
-            $.ajax({
-                type: "GET",
-                url: `/get_posts?category_give=${category}`,
-                data: {},
-                success: function (response) {
-                    console.log(response['all_posts'].length)
-                    {#let posts = JSON.parse(response['all_posts'])#}
-                    let posts = response['all_posts']
-                    for (let i = 0; i < posts.length; i++) {
-                        let name = posts[i]['username']
-                        let date = posts[i]['date']
-                        let image = posts[i]['image']
-                        let comment = posts[i]['cooment']
-                        let id = posts[i]['post_id']
-                        let count_heart = posts[i]['count_heart']
-                        let class_heart = posts[i]['heart_by_me'] ? "fa-heart" : "fa-heart-o"
-                        let comment_short = comment.length <15 ? comment : comment.slice(0,10) +'...'
-
-                        let temp_html = `<div class="card" onclick='$("#modal-post_${id}").addClass("is-active")'>
-                                            <div class="card-image">
-                                                <figure class="image is-4by3">
-                                                    <img src="${image}" alt="Placeholder image">
-                                                </figure>
-                                            </div>
-                                            <div class="card-content">
-                                                <div class="media">
-                                                    <div class="media-content">
-                                                        <p class="title is-4">${name}</p>
-
+                                                            </nav>
+                                                        </div>
                                                     </div>
-                                                    <div class="media-left">
-                                                        <nav class="level is-mobile">
-                                                            <div class="level-left">
-                                                                <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('{id})">
 
-                                                                </a>
+                                                    <div class="content">
+                                                        ${comment_short}
+                                                        <br>
+                                                        <time datetime="2016-1-1">${date}</time>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="modal" id="modal-post_${id}">
+                                                    <div class="modal-background" onclick='$("#modal-post_${id}").removeClass("is-active")'></div>
+                                                    <div class="modal-content">
+                                                        <!-- Any other Bulma elements you want -->
+                                                        <div class="card">
+                                                            <div class="card-image">
+                                                                <figure class="image is-4by3">
+                                                                    <img src="${image}" alt="Placeholder image">
+                                                                </figure>
                                                             </div>
+                                                            <div class="card-content">
+                                                                <div class="media">
+                                                                    <div class="media-left">
+                                                                        <figure class="image is-48x48">
+                                                                            <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+                                                                        </figure>
+                                                                    </div>
+                                                                    <div class="media-content">
+                                                                        <p class="title is-4">${name}</p>
 
-                                                        </nav>
+                                                                    </div>
+
+                                                                </div>
+
+
+                                                                <div class="content">
+                                                                    ${comment}
+                                                                    <br>
+                                                                    <time datetime="2016-1-1">${date}</time>
+                                                                </div>
+
+                                                            </nav>
+                                                        </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                    <button class="modal-close is-large" aria-label="close"
+                                                            onclick='$("#modal-post_${id}").removeClass("is-active")'></button>
+                                                </div>`
+                            $('#post-box').append(temp_html)
+                        }
+                    }
+                })
+            }
 
-                                                <div class="content">
-                                                    ${comment_short}
-                                                    <br>
-                                                    <time datetime="2016-1-1">${date}</time>
-                                                </div>
-                                            </div>
+            function posting_test() {
+                $.ajax({
+                    type: "POST",
+                    url: "/posting_test",
+                    data: {comment_give: '제 사진 보고 자극 받으세요 ㅎㅎ ', image_give: "./static/sample_body.PNG", category: 'body', username_give: '신동', date:'3:34 PM - 22 Sep 2022'},
+                    success: function (response) {
+                        console.log(response['msg'])
+                    }
+                })
+            }
+
+            function toggle_like(post_id, type) {
+                console.log(post_id)
+                let $a_like = $(`#${post_id} a[aria-label='heart']`)
+                let $i_like = $a_like.find("i")
+                if ($i_like.hasClass("fa-heart")) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/update_like",
+                        data: {
+                            post_id_give: post_id,
+                            action_give: "unlike"
+                        },
+                        success: function (response) {
+                            console.log("unlike")
+                            {#$i_like.addClass("fa-heart-o").removeClass("fa-heart")#}
+                            {#$a_like.find("span.like-num").text(response["count"])#}
+                        }
+                    })
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        url: "/update_like",
+                        data: {
+                            post_id_give: post_id,
+                            action_give: "like"
+                        },
+                        success: function (response) {
+                            console.log("like")
+                            {#$i_like.addClass("fa-heart").removeClass("fa-heart-o")#}
+                            {#$a_like.find("span.like-num").text(num2str(response["count"]))#}
+                        }
+                    })
+
+                }
+            }
+            function num2str(count) {
+                if (count > 10000) {
+                    return parseInt(count / 1000) + "k"
+                }
+                if (count > 500) {
+                    return parseInt(count / 100) / 10 + "k"
+                }
+                if (count == 0) {
+                    return ""
+                }
+                return count
+            }
+
+            /*BBTEST*/
+            function posting() {
+                let post_id = $("#post_id").val()
+                let comment = $("#comment").val()
+                let category = $("#category").val()
+                let username = $("#username").val()
+                let date = $("#date").val()
+
+
+                let image = $('#image')[0].images[0]
+                let form_data = new FormData()
+
+                form_data.append("image_give", image)
+                form_data.append("comment_give", comment)
+                form_data.append("category_give", category)
+                form_data.append("username_give", username)
+                form_data.append("date_give", date)
+                form_data.append("post_id_give", post_id)
+
+
+                $.ajax({
+                    type: "POST",
+                    url: "/posting",
+                    data: form_data,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        alert(response["msg"])
+                        $("#modal-post").removeClass("is-active")
+                        window.location.reload()
+                    }
+                });
+            }
+
+        </script>
+        <style>
+            .post {
+                width: 95%;
+                max-width: 3000px;
+                margin: 0px auto 0px auto;
+                padding: 20px;
+
+                position: relative;
+                top: 5vh;
+
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .post > .card {
+                margin-right: 35px;
+                margin-top: 50px;
+                width: 30%;
+            }
+
+
+            /*BBTEST*/
+            #footer {
+                position: fixed;
+                {#left: 0;#}
+                right: 30px;
+                bottom: 30px;
+                height: 6rem;
+            }
+            /*플로팅 버튼 수정X========*/
+            .floating-button {
+                display: flex;
+                position: fixed;
+                right: 10px;
+                bottom: 15px;
+                z-index: 999;
+            }
+
+            /*플로팅 버튼 아이콘 공용 스타일 수정X========*/
+            .guest-btn::before {
+                width: 100%;
+                height: 100%;
+                opacity: 1;
+                border-radius: 50%;
+                font-size: 6em;
+                font-family: 'Font Awesome 5 Pro';
+                /*플로팅 버튼 아이콘 색상 수정O*/
+                color: #664506;
+            }
+
+            /*플로팅 버튼 스타일========*/
+            .move-guestBook {
+                float: left;
+                display: flex;
+                position: relative;
+                width: 100px;
+                height: 100px;
+                border-radius: 50%;
+                cursor: pointer;
+                justify-content: center;
+                align-items: center;
+                margin-left: 5px;
+                /*사용자 설정 파트*/
+                font-weight: 700;
+                background-color: #00000000;
+                {#border: 2px solid #b67700;#}
+            }
+
+            /*플로팅 버튼 아이콘 FontAwesome 사용자 설정*/
+            .guest-btn::before {
+                content: '\f055';
+            }
+
+        </style>
+    </head>
+    <body>
+        <header id="header">
+        <div class="header__logo">
+            <img class="fab" src="../static/favicon.png" alt="favicon" />
+            <a href="#">My Diet</a>
+        </div>
+
+        <ul class="header__navbar">
+            <li class="header__navbar__item">바디</li>
+            <li class="header__navbar__item">식단</li>
+            <li class="header__navbar__item">운동</li>
+            <li class="header__navbar__item">보조제</li>
+        </ul>
+
+        <div class="header__account">
+            {% if login_status %}
+            <div class="account__profile">
+            <div class="profile__box">
+                <!-- <img
+                    class="account__profile_picture"
+                    src="../static/profile_pics/profile_placeholder.png"
+                    alt="profile picture"
+                /> -->
+                <img
+                class="account__profile_picture"
+                src="{{ url_for('static', filename=user_info.profile_pic_real) }}"
+                alt="profile picture"
+                />
+            </div>
+            <p class="account__profile__nickname">
+                {{ user_info.profile_name }} 님
+            </p>
+            <a href="#" class="account__mypage">마이페이지</a>
+            <a href="#" class="account__signout" onclick="sign_out()">로그아웃</a>
+            </div>
+            {% else %}
+            <div class="account__no-profile">
+            <a href="/login" class="account__signin"
+                >로그인&nbsp / &nbsp회원가입</a
+            >
+            </div>
+            {% endif %}
+        </div>
+        </header>
+
+        <div id="post-box" class="post"></div>
+
+        <!-- BBTEST -->
+        <div class="floating-button" id="footer">
+            <span class="move-guestBook">
+                <a class="guest-btn" onclick='$("#modal-post").addClass("is-active")'></a>
+            </span>
+        </div>
+
+        <div class="modal" id="modal-post">
+            <div class="modal-background" onclick='$("#modal-post").removeClass("is-active")'></div>
+                <div class="modal-content">
+                    <div class="box">
+                        <article class="media">
+                            <div class="media-content">
+                                <div class="field">
+                                    <label class="label" for="input-name">게시판</label>
+                                    <p class="control">
+                                        <div class="select is-rounded" id="category">
+                                            <select>
+                                                <option selected>게시판을 선택해주세요</option>
+                                                <option>바디</option>
+                                                <option>식단</option>
+                                                <option>운동</option>
+                                                <option>보조제</option>
+                                            </select>
                                         </div>
-
-
-                                        <div class="modal" id="modal-post_${id}">
-                                                <div class="modal-background" onclick='$("#modal-post_${id}").removeClass("is-active")'></div>
-                                                <div class="modal-content">
-                                                    <!-- Any other Bulma elements you want -->
-                                                    <div class="card">
-                                                        <div class="card-image">
-                                                            <figure class="image is-4by3">
-                                                                <img src="${image}" alt="Placeholder image">
-                                                            </figure>
-                                                        </div>
-                                                        <div class="card-content">
-                                                            <div class="media">
-                                                                <div class="media-left">
-                                                                    <figure class="image is-48x48">
-                                                                        <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-                                                                    </figure>
-                                                                </div>
-                                                                <div class="media-content">
-                                                                    <p class="title is-4">${name}</p>
-
-                                                                </div>
-
-                                                            </div>
-
-
-                                                            <div class="content">
-                                                                ${comment}
-                                                                <br>
-                                                                <time datetime="2016-1-1">${date}</time>
-                                                            </div>
-
-                                                        </nav>
-                                                    </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <button class="modal-close is-large" aria-label="close"
-                                                        onclick='$("#modal-post_${id}").removeClass("is-active")'></button>
-                                            </div>`
-                        $('#post-box').append(temp_html)
-                    }
-                }
-            })
-        }
-
-        function posting_test() {
-            $.ajax({
-                type: "POST",
-                url: "/posting_test",
-                data: {comment_give: '제 사진 보고 자극 받으세요 ㅎㅎ ', image_give: "./static/sample_body.PNG", category: 'body', username_give: '신동', date:'3:34 PM - 22 Sep 2022'},
-                success: function (response) {
-                    console.log(response['msg'])
-                }
-            })
-        }
-
-        function toggle_like(post_id, type) {
-            console.log(post_id)
-            let $a_like = $(`#${post_id} a[aria-label='heart']`)
-            let $i_like = $a_like.find("i")
-            if ($i_like.hasClass("fa-heart")) {
-                $.ajax({
-                    type: "POST",
-                    url: "/update_like",
-                    data: {
-                        post_id_give: post_id,
-                        action_give: "unlike"
-                    },
-                    success: function (response) {
-                        console.log("unlike")
-                        {#$i_like.addClass("fa-heart-o").removeClass("fa-heart")#}
-                        {#$a_like.find("span.like-num").text(response["count"])#}
-                    }
-                })
-            } else {
-                $.ajax({
-                    type: "POST",
-                    url: "/update_like",
-                    data: {
-                        post_id_give: post_id,
-                        action_give: "like"
-                    },
-                    success: function (response) {
-                        console.log("like")
-                        {#$i_like.addClass("fa-heart").removeClass("fa-heart-o")#}
-                        {#$a_like.find("span.like-num").text(num2str(response["count"]))#}
-                    }
-                })
-
-            }
-        }
-        function num2str(count) {
-            if (count > 10000) {
-                return parseInt(count / 1000) + "k"
-            }
-            if (count > 500) {
-                return parseInt(count / 100) / 10 + "k"
-            }
-            if (count == 0) {
-                return ""
-            }
-            return count
-        }
-
-    </script>
-    <style>
-        .post {
-            width: 95%;
-            max-width: 3000px;
-            margin: 20px auto 0px auto;
-            padding: 20px;
-
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-
-        }
-
-        .post > .card {
-            margin-right: 35px;
-            margin-top: 50px;
-            width: 30%;
-        }
-
-
-    </style>
-</head>
-<body>
-<header id="header">
-      <div class="header__logo">
-        <img class="fab" src="../static/favicon.png" alt="favicon" />
-        <a href="#">My Diet</a>
-      </div>
-
-      <ul class="header__navbar">
-        <li class="header__navbar__item" onclick="get_posts('body')">바디</li>
-        <li class="header__navbar__item" onclick="get_posts('food')">식단</li>
-        <li class="header__navbar__item" onclick="get_posts('exercise')">운동</li>
-        <li class="header__navbar__item" onclick="get_posts('supplement')">보조제</li>
-      </ul>
-
-      <div class="header__account">
-        {% if login_status %}
-        <div class="account__profile">
-          <div class="profile__box">
-            <!-- <img
-              class="account__profile_picture"
-              src="../static/profile_pics/profile_placeholder.png"
-              alt="profile picture"
-            /> -->
-            <img
-              class="account__profile_picture"
-              src="{{ url_for('static', filename=user_info.profile_pic_real) }}"
-              alt="profile picture"
-            />
-          </div>
-          <p class="account__profile__nickname">
-            {{ user_info.profile_name }} 님
-          </p>
-          <a href="#" class="account__mypage">마이페이지</a>
-          <a href="#" class="account__signout" onclick="sign_out()">로그아웃</a>
+                                    </p>
+                                </div>
+                                <div class="field">
+                                    <label class="label" for="input-pic">사진</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="image">
+                                        <label class="custom-file-label" for="image">사진을 선택해주세요</label>
+                                    </div>
+                                </div>
+                                <div class="media-content">
+                                    <div class="field">
+                                        <label class="label" for="input-name">내용</label>
+                                        <p class="control">
+                                            <textarea id="comment" class="textarea" placeholder="무슨 생각을 하고 계신가요?"></textarea>
+                                        </p>
+                                    </div>
+                                    <nav class="level is-mobile">
+                                        <div class="level-left"></div>
+                                        <div class="level-right">
+                                            <button class="button is-warning is-light" onclick="posting()">업로드</button>
+                                            <button class="button is-light" onclick='$("#modal-post").removeClass("is-active")'>취소</button>
+                                        </div>
+                                    </nav>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <button class="modal-close is-large" aria-label="close" onclick='$("#modal-post").removeClass("is-active")'></button>
         </div>
-        {% else %}
-        <div class="account__no-profile">
-          <a href="/login" class="account__signin"
-            >로그인&nbsp / &nbsp회원가입</a
-          >
-        </div>
-        {% endif %}
-      </div>
-    </header>
 
 
-<div id="post-box" class="post">
-
-</div>
-
-
-{#<button onclick="posting_test()">값들 넣기</button>#}
-
-
-</body>
+        {#<button onclick="posting_test()">값들 넣기</button>#}
+    </body>
 </html>
-

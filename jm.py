@@ -14,6 +14,24 @@ SECRET_KEY = 'SPARTA'
 client = MongoClient('mongodb+srv://test:sparta@cluster0.yxzg5.mongodb.net/?retryWrites=true&w=majority')
 db = client.dbsparta_plus_week4
 
+@app.route('/')
+def home():
+    # return render_template('index.html')
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+        login_status= True
+        print(user_info)
+        return render_template('home.html', user_info=user_info, login_status=login_status)
+    except:
+        login_status= False
+        return render_template('home.html', user_info=None, login_status=login_status)
+    # except jwt.ExpiredSignatureError:
+    #     return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+    # except jwt.exceptions.DecodeError:
+    #     return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
 @app.route('/login')
 def login():
     msg = request.args.get("msg")
@@ -62,6 +80,9 @@ def check_dup():
     username_receive = request.form['username_give']
     exists = bool(db.users.find_one({"username": username_receive}))
     return jsonify({'result': 'success', 'exists': exists})
+
+
+
 
 
 
